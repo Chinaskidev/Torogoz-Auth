@@ -1,22 +1,23 @@
-"use client"
+'use client'
+
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Wallet } from 'lucide-react'
 import Link from 'next/link'
 
-export default function TorogozPage() {
+export function LandingPageComponent() {
   const [isConnected, setIsConnected] = useState(false)
 
   const handleConnect = () => {
-    // Se supone que aqui va la conexion con la billetera.
+    // Implement wallet connection logic here
     setIsConnected(true)
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white">
       <header className="p-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-800">TorogozAuth</h1>
+        <h1 className="text-2xl font-bold text-blue-800">CredChain</h1>
         <nav>
           <ul className="flex space-x-4">
             <li><Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link></li>
@@ -66,7 +67,7 @@ export default function TorogozPage() {
       </main>
 
       <footer className="bg-blue-900 text-white py-4 text-center">
-        <p>&copy; 2024 TorogozAuth. All rights reserved.</p>
+        <p>&copy; 2024 CredChain. All rights reserved.</p>
       </footer>
     </div>
   )
