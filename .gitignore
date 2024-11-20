@@ -38,3 +38,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+secret.txt
+
+@
+artifacts
+cache
+ignition
+test
+typechain-types
