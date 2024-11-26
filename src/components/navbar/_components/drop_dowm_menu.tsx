@@ -8,7 +8,7 @@ import Link from "next/link";
 
 import { Accordion } from "@/components/ui/accordion";
 
-import { getUserAddress } from "@/utils/queries";
+import { issueCredential } from "@/utils/queries";
 
 
 // propiedades del dropdown menu.
@@ -31,7 +31,7 @@ const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
   };
   useEffect(() => {
     const getUserInfo = async () => {
-      const userInfo = (await getUserAddress(
+      const userInfo = (await issueCredential(
         ready ? wallets[0]?.address : "0x0"
       )) as any;
       setUserInfo(userInfo);

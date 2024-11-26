@@ -9,7 +9,7 @@ import { useWallets } from "@privy-io/react-auth";
 import { X, AlignJustify } from "lucide-react";
 import Link from "next/link";
 import DropdownMenu from "../_components/drop_dowm_menu";
-import { getUserAddress } from "@/utils/queries";
+import { issueCredential } from "@/utils/queries";
 
 
 // Componentes del boton de accion. 
@@ -33,7 +33,7 @@ const ActionButtons = () => {
   useEffect(() => {
     const getUserInfo = async () => {
       if (ready && wallets.length > 0) {
-        const userInfo = await getUserAddress(wallets[0].address);
+        const userInfo = await issueCredential(wallets[0].address);
         setUserInfo(userInfo);
       }
     };
