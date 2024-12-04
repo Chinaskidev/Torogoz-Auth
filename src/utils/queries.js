@@ -3,7 +3,7 @@ import { Web3Provider, Contract} from "ethers";
 
 const contractAddress = "0x2148caA89bA15a41310077Bd11aC82859Ee56a27";
 const contractABI = [
-  // ABI actualizado según tu contrato
+  // ABI  según el contrato
   "function addIssuer(address account)",
   "function revokeIssuer(address account)",
   "function issueCredential(string courseName, string institutionName, address recipient) returns (bytes32)",
@@ -99,3 +99,4 @@ export async function revokeCredential(credentialHash) {
     throw error;
   }
 }
+

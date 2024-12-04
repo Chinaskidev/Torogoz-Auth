@@ -1,124 +1,103 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useWallets } from "@privy-io/react-auth";
-import { usePrivy } from "@privy-io/react-auth";
-
+import { useWallets, usePrivy } from "@privy-io/react-auth";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
 import { Accordion } from "@/components/ui/accordion";
+import { issueCredential, getCredentialsByUser } from "@/utils/queries";
 
-import { issueCredential } from "@/utils/queries";
-
-
-// propiedades del dropdown menu.
 interface DropDownMenuProps {
   onClose: () => void;
 }
 
-
-// Componente del dropdown menu que se despliega en la version movil.
 const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
   const { ready, authenticated, login, logout } = usePrivy();
-  const disableLogin = !ready || (ready && authenticated);
   const { wallets } = useWallets();
-  const [UserInfo, setUserInfo] = useState("");
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+  const [userCredentials, setUserCredentials] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-
-// funciones del dropdown menu.
   const handleLinkClick = () => {
     onClose();
   };
+
   useEffect(() => {
     const getUserInfo = async () => {
-      const userInfo = (await issueCredential(
-        ready ? wallets[0]?.address : "0x0"
-      )) as any;
-      setUserInfo(userInfo);
-    };
+      try {
+        setLoading(true);
+        if (ready && wallets[0]?.address) {
+          const userAddress = wallets[0].address;
+          const credentials = await getCredentialsByUser(userAddress);
+          setUserCredentials(credentials);
 
+          if (credentials.length > 0) {
+            setUserInfo("User has credentials.");
+          } else {
+            setUserInfo("User does not have credentials.");
+          }
+        } else {
+          setUserInfo("User does not exist.");
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+        setUserInfo("Error retrieving user info");
+      } finally {
+        setLoading(false);
+      }
+    };
     getUserInfo();
   }, [ready, authenticated, wallets]);
 
-  // renderizado del dropdown menu.
   return (
-    <div className="w-screen h-screen bg-white  px-2 items-center justify-center absolute  right-0 xl:hidden">
-      <Accordion
-        defaultValue="item-1"
-        className="
-            pl-2
-            "
-        type="single"
-        collapsible
-      >
-        <Link
-          href={"/"}
-          className="
-            flex
-            flex-1
-            items-center 
-            justify-between
-           
-            mt-11
-           pt-2
-            py-4
-            
-            border-b
-            "
-        >
+    <div className="w-screen h-screen bg-white px-2 absolute right-0 xl:hidden z-50">
+      <Accordion defaultValue="item-1" type="single" collapsible>
+        <Link href={"/"} onClick={handleLinkClick} className="py-4 border-b">
           Home
         </Link>
-
-        <Link
-          href={"/verify-identity"}
-          className="
-            flex
-            flex-1
-            items-center 
-            justify-between
-     
-          
-            py-4
-            
-            border-b
-            "
-        >
+        <Link href={"/verify-identity"} onClick={handleLinkClick} className="py-4 border-b">
           Verify Identity
         </Link>
       </Accordion>
 
-      <div className="pt-12">
-        <div className="  space-y-4 flex flex-col px-4">
-          {authenticated && UserInfo !== "User does not exist." ? (
-            <Link href={"/dashboard"}>
-              <Button
-                className="
-              w-full
-                  
-                        "
-              >
-                Dashboard
+      <div className="pt-12 space-y-4 flex flex-col px-4">
+        {loading ? (
+          <p>Loading user info...</p>
+        ) : (
+          <>
+            {authenticated ? (
+              <>
+                {userInfo !== "User does not exist." ? (
+                  <>
+                    <Link href={"/dashboard"}>
+                      <Button className="w-full">Dashboard</Button>
+                    </Link>
+
+                    {userCredentials.length === 0 && (
+                      <Link href={"/onboard"}>
+                        <Button variant="outline" className="w-full">
+                          Get Credentials
+                        </Button>
+                      </Link>
+                    )}
+                    <Button variant="outline" onClick={logout} className="w-full">
+                      Disconnect
+                    </Button>
+                  </>
+                ) : (
+                  <Link href={"/onboard"}>
+                    <Button variant="outline" className="w-full">
+                      Get Started
+                    </Button>
+                  </Link>
+                )}
+              </>
+            ) : (
+              <Button variant="outline" onClick={login} className="w-full">
+                Connect
               </Button>
-            </Link>
-          ) : authenticated && UserInfo == "User does not exist." ? (
-            <Link href={"/onboard"}>
-              <Button variant={"outline"} className="w-full">
-                Get DID
-              </Button>
-            </Link>
-          ) : (
-            ""
-          )}
-          {authenticated ? (
-            <Button variant={"outline"} onClick={logout} className="w-full">
-              Disconnect
-            </Button>
-          ) : (
-            <Button variant={"outline"} onClick={login} className="w-full">
-              Connect
-            </Button>
-          )}
-        </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
