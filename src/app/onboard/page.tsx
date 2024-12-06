@@ -1,13 +1,18 @@
 import Navbar from "@/components/navbar/navar";
+import ContactForm from "./components/contact-form"
 
-const Onboard = ()=>{
+const OnBoard = ()=>{
     return(
         <>
         <Navbar />
-        <p>onboard Page</p>
+
+        <ContactForm />
+
+        
+        
         </>
     );
 
 };
 
-export default Onboard
+export default OnBoard;

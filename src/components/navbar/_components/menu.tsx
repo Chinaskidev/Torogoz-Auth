@@ -27,11 +27,11 @@ export function Menu() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link href={"/about"} legacyBehavior passHref>
+          <Link href={"/verify"} legacyBehavior passHref>
             <NavigationMenuLink
               className={`text-gray-700 hover:text-blue-600 transition-all ${navigationMenuTriggerStyle()}`}
             >
-              About Us
+              Verify Credentials
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>

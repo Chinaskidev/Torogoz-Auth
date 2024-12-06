@@ -3,39 +3,31 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/toaster";
 import {
-  getUserByAddress,
-  createUser,
-  getUsernameByAddress,
+    issueCredential,
+    verifyCredential,
+    getCredentialsByUser,
+    revokeCredential,
 } from "@/utils/queries";
 import { useWallets } from "@privy-io/react-auth";
 
-import UserProfileDisplay from "./components/user-profile-display";
-import SocialMediaInputs from "./components/social-media-inputs";
-import FormFields from "./components/form-fields";
+import FormFields from "@/app/onboard/components/form-fields";
+import SocialMediaInputs from "@/app/onboard/components/social-media-inputs";
+import UserProfileDisplay from "@/app/onboard/components/user-profile-display";
 import CustomImageUploader from "@/components/ui/custom-image-uploader";
 
 import { Toaster } from "@/components/ui/toaster";
 import { FormSchema, FormValues } from "@/utils/formSchema";
 import { options } from "@/utils/options";
-
-const urlPatterns: Record<string, string> = {
-  x: "^https?:\\/\\/(www\\.)?twitter\\.com\\/[A-Za-z0-9_]{1,15}$",
-  instagram: "^https?:\\/\\/(www\\.)?instagram\\.com\\/[A-Za-z0-9_.]+$",
-  youtube:
-    "^https?:\\/\\/(www\\.)?youtube\\.com\\/(channel\\/|user\\/)?[A-Za-z0-9_-]+$",
-  tiktok: "^https?:\\/\\/(www\\.)?tiktok\\.com\\/@[A-Za-z0-9_.]+$",
-  linkedin: "^https?:\\/\\/(www\\.)?linkedin\\.com\\/in\\/[A-Za-z0-9_-]+$",
-};
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
 
-export default function CreateProfile() {
+export default function EditProfile() {
   const [countryCode, setCountryCode] = useState<string>("");
   const { wallets } = useWallets();
   const { toast } = useToast();
@@ -81,24 +73,24 @@ export default function CreateProfile() {
       let userInfo = (await getUserByAddress(wallets[0]?.address)) as any;
       let username = (await getUsernameByAddress(wallets[0]?.address)) as any;
       setFormData({
-        first_name: userInfo?.basicInfo.firstName,
-        last_name: userInfo?.basicInfo.lastName,
+        first_name: userInfo.basicInfo.firstName,
+        last_name: userInfo.basicInfo.lastName,
         username: username,
-        email: userInfo?.basicInfo.email,
-        home_address: userInfo?.basicInfo.homeAddress,
-        date_of_birth: userInfo?.basicInfo.dateOfBirth,
-        education: userInfo?.professionalInfo.education,
-        work_history: userInfo?.professionalInfo.workHistory,
-        phone_number: userInfo?.basicInfo.phoneNumber,
-        job_title: userInfo?.professionalInfo.jobTitle,
-        x: userInfo?.socialLinks.x,
-        instagram: userInfo?.socialLinks.instagram,
-        tiktok: userInfo?.socialLinks.tiktok,
-        youtube: userInfo?.socialLinks.youtube,
-        linkedin: userInfo?.socialLinks.linkedin,
-        info: userInfo?.professionalInfo.info,
-        skills: userInfo?.professionalInfo.skills,
-        imageUrl: userInfo?.professionalInfo.imageURL,
+        email: userInfo.basicInfo.email,
+        home_address: userInfo.basicInfo.homeAddress,
+        date_of_birth: userInfo.basicInfo.dateOfBirth,
+        education: userInfo.professionalInfo.education,
+        work_history: userInfo.professionalInfo.workHistory,
+        phone_number: userInfo.basicInfo.phoneNumber,
+        job_title: userInfo.professionalInfo.jobTitle,
+        x: userInfo.socialLinks.x,
+        instagram: userInfo.socialLinks.instagram,
+        tiktok: userInfo.socialLinks.tiktok,
+        youtube: userInfo.socialLinks.youtube,
+        linkedin: userInfo.socialLinks.linkedin,
+        info: userInfo.professionalInfo.info,
+        skills: userInfo.professionalInfo.skills,
+        imageUrl: userInfo.professionalInfo.imageURL,
       });
       console.log(userInfo);
       console.log(username);
@@ -123,13 +115,21 @@ export default function CreateProfile() {
   const handleChange = (name: string, value: any) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     let error = "";
-
     if (name === "email" && value && !/.+@.+\..+/.test(value)) {
       error = "Invalid email address";
     } else if (
       ["x", "instagram", "youtube", "tiktok", "linkedin"].includes(name)
     ) {
-      const pattern = urlPatterns[name];
+      const pattern = {
+        x: "^https?:\\/\\/(www\\.)?twitter\\.com\\/[A-Za-z0-9_]{1,15}$",
+        instagram: "^https?:\\/\\/(www\\.)?instagram\\.com\\/[A-Za-z0-9_.]+$",
+        youtube:
+          "^https?:\\/\\/(www\\.)?youtube\\.com\\/(channel\\/|user\\/)?[A-Za-z0-9_-]+$",
+        tiktok: "^https?:\\/\\/(www\\.)?tiktok\\.com\\/@[A-Za-z0-9_.]+$",
+        linkedin:
+          "^https?:\\/\\/(www\\.)?linkedin\\.com\\/in\\/[A-Za-z0-9_-]+$",
+      }[name];
+
       if (pattern) {
         const isValid = validateUrl(value, pattern);
         if (!isValid) {
@@ -137,7 +137,6 @@ export default function CreateProfile() {
         }
       }
     }
-
     setErrors((prevErrors: any) => ({ ...prevErrors, [name]: error }));
   };
 
@@ -258,17 +257,17 @@ export default function CreateProfile() {
         throw new Error("Required fields are missing.");
       }
 
-      const receipt = await createUser(
+      const receipt = await editUser(
         formData.username,
         basicInfo,
         professionalInfo,
         socialLinks,
         visibility
       );
-      console.log("User created:", receipt);
+      console.log("User updated:", receipt);
       toast({
         title: "",
-        description: "User created successfully",
+        description: "User updated successfully",
       });
       setSubmitted(true);
     } catch (error: any) {
@@ -282,13 +281,10 @@ export default function CreateProfile() {
   };
 
   return (
-    <div
-      className="flex flex-col md:flex-row items-center md:items-start justify-between 
-    space-y-4 md:space-y-0 md:space-x-10 pt-20 pb-20 px-4 md:px-16"
-    >
+    <div className="flex flex-col md:flex-row items-center md:items-start justify-between space-y-4 md:space-y-0 md:space-x-10 pt-20 pb-20 px-4 md:px-16">
       <div>
         <div className="md:text-4xl text-xl font-medium w-3/3 pb-3">
-          Creating a DID is a breeze with{" "}
+          Editing your DID is easy with{" "}
           <span className="text-sky-500">identiFi</span>
         </div>
         <Toaster />
@@ -359,7 +355,7 @@ export default function CreateProfile() {
               "
             >
               <div className="w-80">
-                <image
+                <img
                   src="/assets/MeditatingDoodle.svg"
                   alt="logo"
                   className="mx-auto"

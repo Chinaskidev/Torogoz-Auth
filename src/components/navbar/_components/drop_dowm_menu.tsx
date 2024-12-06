@@ -30,11 +30,7 @@ const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
           const credentials = await getCredentialsByUser(userAddress);
           setUserCredentials(credentials);
 
-          if (credentials.length > 0) {
-            setUserInfo("User has credentials.");
-          } else {
-            setUserInfo("User does not have credentials.");
-          }
+          setUserInfo(credentials.length > 0 ? "User has credentials." : "User does not have credentials.");
         } else {
           setUserInfo("User does not exist.");
         }
@@ -55,7 +51,7 @@ const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
           Home
         </Link>
         <Link href={"/verify-identity"} onClick={handleLinkClick} className="py-4 border-b">
-          Verify Identity
+          Verify Credentials
         </Link>
       </Accordion>
 
@@ -66,30 +62,20 @@ const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
           <>
             {authenticated ? (
               <>
-                {userInfo !== "User does not exist." ? (
-                  <>
-                    <Link href={"/dashboard"}>
-                      <Button className="w-full">Dashboard</Button>
-                    </Link>
-
-                    {userCredentials.length === 0 && (
-                      <Link href={"/onboard"}>
-                        <Button variant="outline" className="w-full">
-                          Get Credentials
-                        </Button>
-                      </Link>
-                    )}
-                    <Button variant="outline" onClick={logout} className="w-full">
-                      Disconnect
-                    </Button>
-                  </>
+                {userCredentials.length > 0 ? (
+                  <Link href={"/dashboard"}>
+                    <Button className="w-full">Dashboard</Button>
+                  </Link>
                 ) : (
                   <Link href={"/onboard"}>
                     <Button variant="outline" className="w-full">
-                      Get Started
+                      Get Credentials
                     </Button>
                   </Link>
                 )}
+                <Button variant="outline" onClick={logout} className="w-full">
+                  Disconnect
+                </Button>
               </>
             ) : (
               <Button variant="outline" onClick={login} className="w-full">

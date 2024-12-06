@@ -84,7 +84,7 @@ const ActionButtons = () => {
          
           "
               >
-                <div className="">Get DID</div>
+                <div className="">Get Credentials</div>
               </Link>
               <div
                 className="font-thin     
