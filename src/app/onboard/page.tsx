@@ -1,13 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { usePrivy } from '@privy-io/react-auth'
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { CertificateForm } from '@/components/certificate-form'
 import { FiUser, FiFileText, FiCheck } from 'react-icons/fi'
-
+import { Web3Provider } from '@ethersproject/providers';
+import Navbar from "../../components/navbar/navar";
+import React, { useState, useEffect } from "react";
+import { useWallets } from "@privy-io/react-auth";
+import { X, AlignJustify } from "lucide-react";
+import Link from "next/link";
 const steps = [
   { id: 'connect', title: 'Connect Wallet', icon: FiUser },
   { id: 'create', title: 'Create Certificate', icon: FiFileText },
