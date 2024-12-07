@@ -1,18 +1,11 @@
-import Navbar from "@/components/navbar/navar";
-import ContactForm from "./components/contact-form"
+import { CertificateForm } from '../onboard/components/certificate-form'
 
-const OnBoard = ()=>{
-    return(
-        <>
-        <Navbar />
+export default function IssueCertificatePage() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold mb-4">Issue New Certificate</h1>
+      <CertificateForm />
+    </div>
+  )
+}
 
-        <ContactForm />
-
-        
-        
-        </>
-    );
-
-};
-
-export default OnBoard;
