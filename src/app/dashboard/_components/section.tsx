@@ -191,7 +191,7 @@ const Section = () => {
               <div className="text-center flex flex-col items-center justify-center">
                 <image
                   className="w-28 h-28 shadow-md object-cover object-center p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-                  src={formData.imageUrl || "/images/avatar.jpeg"}
+                  src={formData.imageUrl || "/public/torogoz1.png"}
                   alt="Bordered avatar"
                 />
                 <p className="font-bold text-lg text-gray-700 py-2">

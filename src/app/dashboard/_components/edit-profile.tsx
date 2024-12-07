@@ -15,7 +15,7 @@ import {
 import { useWallets } from "@privy-io/react-auth";
 
 import FormFields from "@/app/onboard/components/form-fields";
-import SocialMediaInputs from "@/app/onboard/components/social-media-inputs";
+import SocialMediaInputs from "@/app/onboard/components/CredentialCard";
 import UserProfileDisplay from "@/app/onboard/components/user-profile-display";
 import CustomImageUploader from "@/components/ui/custom-image-uploader";
 
@@ -70,8 +70,8 @@ export default function EditProfile() {
 
   useEffect(() => {
     const getUserInfo = async () => {
-      let userInfo = (await getUserByAddress(wallets[0]?.address)) as any;
-      let username = (await getUsernameByAddress(wallets[0]?.address)) as any;
+      let userInfo = (await issueCredential(wallets[0]?.address)) as any;
+      let username = (await getCredentialsByUser(wallets[0]?.address)) as any;
       setFormData({
         first_name: userInfo.basicInfo.firstName,
         last_name: userInfo.basicInfo.lastName,
@@ -285,7 +285,7 @@ export default function EditProfile() {
       <div>
         <div className="md:text-4xl text-xl font-medium w-3/3 pb-3">
           Editing your DID is easy with{" "}
-          <span className="text-sky-500">identiFi</span>
+          <span className="text-sky-500">TorogozAuth</span>
         </div>
         <Toaster />
         <UserProfileDisplay formData={formData} countryCode={countryCode} />
@@ -355,7 +355,7 @@ export default function EditProfile() {
               "
             >
               <div className="w-80">
-                <img
+                <image
                   src="/assets/MeditatingDoodle.svg"
                   alt="logo"
                   className="mx-auto"

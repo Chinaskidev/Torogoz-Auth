@@ -7,17 +7,18 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/toaster";
 import {
-  getUserByAddress,
-  createUser,
-  getUsernameByAddress,
+  issueCredential,
+    verifyCredential,
+    getCredentialsByUser,
+    revokeCredential,
 } from "@/utils/queries";
 import { useWallets } from "@privy-io/react-auth";
 
-import UserProfileDisplay from "./components/user-profile-display";
-import SocialMediaInputs from "./components/social-media-inputs";
-import FormFields from "./components/form-fields";
+import UserProfileDisplay from "../components/user-profile-display";
+import SocialMediaInputs from "../components/CredentialCard";
+import FormFields from "../components/form-fields";
 import CustomImageUploader from "@/components/ui/custom-image-uploader";
 
 import { Toaster } from "@/components/ui/toaster";
@@ -26,10 +27,6 @@ import { options } from "@/utils/options";
 
 const urlPatterns: Record<string, string> = {
   x: "^https?:\\/\\/(www\\.)?twitter\\.com\\/[A-Za-z0-9_]{1,15}$",
-  instagram: "^https?:\\/\\/(www\\.)?instagram\\.com\\/[A-Za-z0-9_.]+$",
-  youtube:
-    "^https?:\\/\\/(www\\.)?youtube\\.com\\/(channel\\/|user\\/)?[A-Za-z0-9_-]+$",
-  tiktok: "^https?:\\/\\/(www\\.)?tiktok\\.com\\/@[A-Za-z0-9_.]+$",
   linkedin: "^https?:\\/\\/(www\\.)?linkedin\\.com\\/in\\/[A-Za-z0-9_-]+$",
 };
 
@@ -78,8 +75,8 @@ export default function CreateProfile() {
 
   useEffect(() => {
     const getUserInfo = async () => {
-      let userInfo = (await getUserByAddress(wallets[0]?.address)) as any;
-      let username = (await getUsernameByAddress(wallets[0]?.address)) as any;
+      let userInfo = (await issueCredential(wallets[0]?.address)) as any;
+      let username = (await getCredentialsByUser(wallets[0]?.address)) as any;
       setFormData({
         first_name: userInfo?.basicInfo.firstName,
         last_name: userInfo?.basicInfo.lastName,
@@ -235,9 +232,6 @@ export default function CreateProfile() {
 
       const socialLinks = {
         x: formData.x || "",
-        instagram: formData.instagram || "",
-        tiktok: formData.tiktok || "",
-        youtube: formData.youtube || "",
         linkedin: formData.linkedin || "",
       };
 
@@ -289,7 +283,7 @@ export default function CreateProfile() {
       <div>
         <div className="md:text-4xl text-xl font-medium w-3/3 pb-3">
           Creating a DID is a breeze with{" "}
-          <span className="text-sky-500">identiFi</span>
+          <span className="text-sky-500">TorogozAuth</span>
         </div>
         <Toaster />
         <UserProfileDisplay formData={formData} countryCode={countryCode} />
