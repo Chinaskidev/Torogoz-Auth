@@ -9,7 +9,11 @@ import { issueCredential, useContractSigner } from '@/utils/queries'
 import { uploadToIPFS } from '@/utils/ipfsUtils'
 import { JsonRpcSigner } from 'ethers'
 
-export function CertificateForm() {
+interface CertificateFormProps {
+  onComplete: () => void;  // Recibe la función para avanzar al siguiente paso
+}
+
+export function CertificateForm({ onComplete }: CertificateFormProps) {
   const [formData, setFormData] = useState({
     courseName: '',
     institutionName: '',
@@ -56,6 +60,9 @@ export function CertificateForm() {
       )
 
       setSuccess(`Certificate issued successfully. IPFS Hash: ${ipfsHash}, Transaction hash: ${txHash}`)
+
+      // Llamar a onComplete después de completar la emisión
+      onComplete()
     } catch (err) {
       setError('Error issuing certificate: ' + (err as Error).message)
     } finally {
