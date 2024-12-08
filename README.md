@@ -143,5 +143,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 
 **Author:** Chinaskidev  
 **Email:** torogozauth@gmail.com
-
+**Discord:** (https://discord.com/channels/@me/1314024278835990558)
 
