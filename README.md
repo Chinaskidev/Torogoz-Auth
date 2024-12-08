@@ -4,7 +4,7 @@
 
 
 
-  ![TorogozAuth Logo](/public/torogozauthlogo20.png)
+  ![TorogozAuth Logo](./torogozauthlogo20.png)
 
 
 
