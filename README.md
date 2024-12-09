@@ -35,7 +35,7 @@ A secure, scalable, and modern authentication system designed for blockchain and
 
 ## Description
 
-Torogoz-Auth is an authentication system designed for modern applications that require a secure and decentralized approach. This project is ideal for developers looking to integrate robust authentication into their blockchain or traditional projects.
+TorogozAuth is a decentralised identity DApp (DID) that enables institutions and professionals to issue, manage, and verify academic and professional credentials securely and transparently using blockchain technology. With a modern and intuitive interface, TorogozAuth connects users via their Web3 wallets and records certifications directly on the blockchain, ensuring authenticity and immutability. This solution builds trust, streamlines credential validation, and empowers users with complete control over their professional digital identity.
 
 ---
 
