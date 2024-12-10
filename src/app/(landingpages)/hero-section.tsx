@@ -45,7 +45,7 @@ const HeroSection = () => {
       window.removeEventListener("wheel", handleWheel);
       document.body.style.overflow = ""; // Restaurar el scroll al desmontar
     };
-  }, [scrolling, showFinalSection]);
+  }, [scrollImages.length, scrolling, showFinalSection]);
 
   return (
     <main className="relative min-h-screen bg-gradient-to-b from-blue-100 to-white">
