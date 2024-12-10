@@ -4,7 +4,7 @@ import { useWallets, usePrivy } from "@privy-io/react-auth";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Accordion } from "@/components/ui/accordion";
-import { issueCredential, getCredentialsByUser } from "@/utils/queries";
+import { getCredentialsByUser } from "@/utils/queries";
 
 interface DropDownMenuProps {
   onClose: () => void;
@@ -13,8 +13,8 @@ interface DropDownMenuProps {
 const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
   const { ready, authenticated, login, logout } = usePrivy();
   const { wallets } = useWallets();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
-  const [userCredentials, setUserCredentials] = useState<any[]>([]);
+  const [, setUserInfo] = useState<string | null>(null);
+  const [userCredentials, setUserCredentials] = useState<unknown[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleLinkClick = () => {

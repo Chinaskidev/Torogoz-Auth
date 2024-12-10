@@ -3,7 +3,8 @@
 
 "use client"
 
-import React, {useState, useEffect} from 'react';
+//import React, {useState, useEffect} from 'react';
+import React from 'react';
 import Logo from './_components/logo';
 import { Menu } from './_components/menu';
 import ActionButtons from './_components/action_buttons';

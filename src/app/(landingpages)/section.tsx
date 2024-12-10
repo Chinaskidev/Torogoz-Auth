@@ -2,11 +2,8 @@
 
 
 import {
-  PiArrowRight,
   PiCheckCircleFill,
-  PiClipboardLight,
   PiHouseFill,
-  PiShareLight,
   PiUserCheck,
 } from "react-icons/pi";
 
