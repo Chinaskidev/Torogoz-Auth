@@ -37,6 +37,7 @@ const ActionButtons = () => {
         setUserInfo(userInfo);
       }
     };
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
     getUserInfo();
   }, [ready, authenticated, wallets]);
