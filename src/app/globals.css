@@ -74,11 +74,8 @@
 
 /* Nueva regla para la fuente Caveat */
 @font-face {
-  font-family: 'Caveat';
-  src: url('/fonts/Caveat-Regular.ttf') format('truetype');
-  font-weight: 400;
-}
-
-.font-caveat {
-  font-family: 'Caveat', sans-serif;
+  font-family: 'Russo One';
+  src: url('/fonts/RussoOne-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }

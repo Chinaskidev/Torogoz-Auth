@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { cn } from "@lib/utils";
-import { Russo_One } from 'next/font/google';
+{/*import { Russo_One } from 'next/font/google';*/}
 
 import {
   NavigationMenu,
@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/navigation-menu";
 
 // Configuración de la fuente Russo One
-const russoOne = Russo_One({ weight: "400", subsets: ["latin"] });
+{/*const russoOne = Russo_One({ weight: "400", subsets: ["latin"] });*/}
 
 export function Menu() {
   return (
-    <NavigationMenu className={`hidden lg:flex space-x-6 ${russoOne.className}`}>
+    <NavigationMenu className={`hidden lg:flex space-x-6`}>
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href={"/"} legacyBehavior passHref>

@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 
+
 export default function HeroSection() {
   return (
     <main className="relative bg-white text-black">
@@ -23,8 +24,8 @@ export default function HeroSection() {
       <section className="container mx-auto px-6 py-20 min-h-screen bg-gray-100 flex flex-col md:flex-row items-center gap-12">
         {/* Contenedor de texto */}
         <div className="space-y-8 md:w-1/2">
-          <h1 className="text-4xl md:text-5xl font-bold">Why Torogoz 3</h1>
-          <p className="text-gray-600 text-lg">
+          <h1 className="text-4xl md:text-5xl font-bold font-russo">Why Torogoz 3</h1>
+          <p className="text-grey-800 text-lg font-russo">
             At Torogoz 3, we leverage decentralised identification technology to revolutionise the way identities are verified and managed. Our solution enables identity verification providers (IDV) and identity management systems (IAM) to securely confirm the same individual across multiple platforms or organisations without compromising privacy. We streamline the user experience, reducing onboarding friction by ensuring that a previously verified customer does not need to undergo repetitive processes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
