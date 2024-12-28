@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 /*body {
   font-family: Arial, Helvetica, sans-serif;
@@ -71,4 +70,15 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Nueva regla para la fuente Caveat */
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/Caveat-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+.font-caveat {
+  font-family: 'Caveat', sans-serif;
 }

@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { cn } from "@lib/utils";
+import { Russo_One } from 'next/font/google';
 
 import {
   NavigationMenu,
@@ -12,16 +13,19 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
+// Configuración de la fuente Russo One
+const russoOne = Russo_One({ weight: "400", subsets: ["latin"] });
+
 export function Menu() {
   return (
-    <NavigationMenu className="hidden lg:flex space-x-6">
+    <NavigationMenu className={`hidden lg:flex space-x-6 ${russoOne.className}`}>
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href={"/"} legacyBehavior passHref>
             <NavigationMenuLink
-              className={`text-gray-700 hover:text-blue-600 transition-all ${navigationMenuTriggerStyle()}`}
+              className={`text-gray-600 hover:text-blue-600 transition-all text-base font-russo ${navigationMenuTriggerStyle()}`}
             >
-              Home
+              <div className="text-lg font-medium">Home</div> {/* Modificando tamaño y fuente */}
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
@@ -29,9 +33,9 @@ export function Menu() {
         <NavigationMenuItem>
           <Link href={"/verify"} legacyBehavior passHref>
             <NavigationMenuLink
-              className={`text-gray-700 hover:text-blue-600 transition-all ${navigationMenuTriggerStyle()}`}
+              className={`text-gray-600 hover:text-blue-600 transition-all text-base font-russo ${navigationMenuTriggerStyle()}`}
             >
-              Verify Credentials
+              <div className="text-lg font-medium">Verify Credentials</div> {/* Modificando tamaño y fuente */}
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
@@ -40,7 +44,7 @@ export function Menu() {
   );
 }
 
-  const ListItem = React.forwardRef<
+const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
 >(({ className, title, children, ...props }, ref) => {

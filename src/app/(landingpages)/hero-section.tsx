@@ -1,88 +1,56 @@
-"use client";
+'use client'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-
-const HeroSection = () => {
-  const [scrollIndex, setScrollIndex] = useState(0);
-  const [scrolling, setScrolling] = useState(false);
-
-  const scrollImages = [
-    "/torogoz1.png",
-    "/decentralized.png",
-    "/credential.png",
-    "/verification.png",
-    "/secure.png",
-    "/verifiable.png",
-    "/portable.png",
-    "/academic.png",
-    "/professional.png",
-  ];
-
-  const showFinalSection = scrollIndex >= scrollImages.length;
-
-  useEffect(() => {
-    const handleWheel = (event: WheelEvent) => {
-      if (scrolling || showFinalSection) return; // Bloquea el scroll si está animando o ya llegó al final
-      setScrolling(true);
-
-      const direction = event.deltaY > 0 ? 1 : -1;
-      setScrollIndex((prevIndex) => {
-        let newIndex = prevIndex + direction;
-        if (newIndex < 0) newIndex = 0; // Evita valores negativos
-        if (newIndex > scrollImages.length) newIndex = scrollImages.length; // Detiene al final
-        return newIndex;
-      });
-
-      // Controla el tiempo para permitir el próximo scroll
-      setTimeout(() => setScrolling(false), 700);
-    };
-
-    document.body.style.overflow = showFinalSection ? "auto" : "hidden"; // Desbloquea scroll al final
-    window.addEventListener("wheel", handleWheel);
-
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      document.body.style.overflow = ""; // Restaurar el scroll al desmontar
-    };
-  }, [scrollImages.length, scrolling, showFinalSection]);
-
+export default function HeroSection() {
   return (
-    <main className="relative min-h-screen bg-gradient-to-b from-blue-100 to-white">
-      {/* Sección de imágenes con animación */}
-      {!showFinalSection && (
-        <section className="container mx-auto px-4 py-8 min-h-screen flex flex-col items-center justify-center">
-          <div className="relative w-80 h-80 md:w-96 md:h-96">
+    <main className="relative bg-white text-black">
+      {/* Imagen principal fija al inicio */}
+      <section className="container mx-auto px-4 py-8 flex items-center justify-center h-screen">
+        <div className="relative w-80 h-80 md:w-96 md:h-96 flex items-center justify-center">
+          <Image
+            src="/torogozlogo.png"
+            alt="Torogoz Logo"
+            width={950}
+            height={950}
+            priority
+            className="object-contain mt-20"
+          />
+        </div>
+      </section>
+
+      {/* Contenido principal */}
+      <section className="container mx-auto px-6 py-20 min-h-screen bg-gray-100 flex flex-col md:flex-row items-center gap-12">
+        {/* Contenedor de texto */}
+        <div className="space-y-8 md:w-1/2">
+          <h1 className="text-4xl md:text-5xl font-bold">Why Torogoz 3</h1>
+          <p className="text-gray-600 text-lg">
+            At Torogoz 3, we leverage decentralised identification technology to revolutionise the way identities are verified and managed. Our solution enables identity verification providers (IDV) and identity management systems (IAM) to securely confirm the same individual across multiple platforms or organisations without compromising privacy. We streamline the user experience, reducing onboarding friction by ensuring that a previously verified customer does not need to undergo repetitive processes.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button size="lg" className="bg-violet-600 hover:bg-violet-700">
+              Sign up for free
+            </Button>
+            <Button size="lg" className="bg-violet-600 hover:bg-violet-700">
+              Talk to Sales
+            </Button>
+          </div>
+        </div>
+
+        {/* Contenedor de la imagen */}
+        <div className="flex justify-center md:w-1/2">
+          <div className="relative w-[350px] h-[350px] md:w-[450px] md:h-[450px]">
             <Image
-              src={scrollImages[scrollIndex]}
-              alt={`Image ${scrollIndex + 1}`}
-              fill
+              src="/certificado.png"
+              alt="Certificate Illustration"
+              width={980}
+              height={980}
               priority
-              className="object-contain transition-transform duration-1000 ease-in-out"
+              className="object-contain"
             />
           </div>
-        </section>
-      )}
-
-      {/* Sección final con logo */}
-      {showFinalSection && (
-        <>
-          <section className="container mx-auto px-4 py-16 flex flex-col items-center justify-center">
-            <div className="relative w-96 h-96 md:w-[32rem] md:h-[32rem] mb-16 transition-all duration-1000">
-              <Image
-                src="/torogozauthlogo.png"
-                alt="Torogozauth Logo"
-                width={900}
-                height={900}
-                priority
-                className="object-contain"
-              />
-            </div>
-          </section>
-        </>
-      )}
+        </div>
+      </section>
     </main>
-  );
-};
-
-export default HeroSection;
+  )
+}
