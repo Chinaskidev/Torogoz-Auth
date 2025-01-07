@@ -2,11 +2,11 @@ import { ethers } from "ethers";
 import { usePrivy } from "@privy-io/react-auth";
 
 // Dirección y ABI del contrato
-const contractAddress = "0x2148caA89bA15a41310077Bd11aC82859Ee56a27";
+const contractAddress = "0xA02C28C1C9914C0dF497C30b367A42A7Ea8B0BcD";
 const contractABI = [
   "function addIssuer(address account)",
   "function revokeIssuer(address account)",
-  "function issueCredential(string courseName, string institutionName, address recipient) returns (bytes32)",
+  "function issueCredential(string institutionName,string courseName, string firstName, lastName, address recipient) returns (bytes32)",
   "function verifyCredential(bytes32 credentialHash) view returns (bool)",
   "function revokeCredential(bytes32 credentialHash)",
   "function getCredentialsByUser(address user) view returns (bytes32[])",
