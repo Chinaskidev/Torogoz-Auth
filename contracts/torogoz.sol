@@ -1,47 +1,43 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.27;
+pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
 contract Torogoz is AccessControl, ERC721Enumerable {
-    // Roles para la gestión de permisos
     bytes32 public constant ISSUER_ROLE = keccak256("ISSUER_ROLE");
 
-    // Estructura de la credencial
-    struct Credential {
-        string courseName;
+    struct Credential {                
         string institutionName;
-        uint256 issueDate; //timestamps en lugar de strings para que no haya errores en las fechas
+        string courseName;
+        string firstName;       
+        string lastName;
+        uint256 issueDate;
         address recipient;
         bool valid;
     }
 
-    // Mapeo para almacenar credenciales por su hash único
     mapping(bytes32 => Credential) public credentials;
-
-    // Mapeo para rastrear las credenciales emitidas a cada dirección
     mapping(address => bytes32[]) private userCredentials;
 
-    // Eventos
     event CredentialIssued(
         address indexed recipient,
-        bytes32 indexed credentialHash,
-        string courseName,
+        bytes32 indexed credentialHash,        
         string institutionName,
+        string courseName,
+        string firstName,
+        string lastName,
         uint256 issueDate
     );
     event IssuerAdded(address indexed account);
     event IssuerRevoked(address indexed account);
     event CredentialRevoked(bytes32 indexed credentialHash);
 
-    // Constructor
     constructor() ERC721("TorogozCredential", "TORC") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ISSUER_ROLE, msg.sender);
     }
 
-    // Función para agregar un emisor
     function addIssuer(address account) public {
         require(
             hasRole(DEFAULT_ADMIN_ROLE, msg.sender),
@@ -51,7 +47,6 @@ contract Torogoz is AccessControl, ERC721Enumerable {
         emit IssuerAdded(account);
     }
 
-    // Función para revocar el rol de emisor
     function revokeIssuer(address account) public {
         require(
             hasRole(DEFAULT_ADMIN_ROLE, msg.sender),
@@ -61,23 +56,33 @@ contract Torogoz is AccessControl, ERC721Enumerable {
         emit IssuerRevoked(account);
     }
 
-    // Función para emitir una credencial
-    function issueCredential(
-        string memory _courseName,
+    function issueCredential(        
         string memory _institutionName,
+        string memory _courseName,
+        string memory _firstName,
+        string memory _lastName,
         address _recipient
     ) public onlyRole(ISSUER_ROLE) returns (bytes32) {
         uint256 _issueDate = block.timestamp;
 
         // Generar un hash único para la credencial
         bytes32 credentialHash = keccak256(
-            abi.encodePacked(_courseName, _institutionName, _issueDate, _recipient)
+            abi.encodePacked(                
+                _institutionName,
+                _courseName,
+                _firstName,
+                _lastName,
+                _issueDate,
+                _recipient
+            )
         );
 
         // Almacenar la credencial
-        credentials[credentialHash] = Credential(
-            _courseName,
+        credentials[credentialHash] = Credential(            
             _institutionName,
+            _courseName,
+            _firstName,
+            _lastName,
             _issueDate,
             _recipient,
             true
@@ -94,20 +99,20 @@ contract Torogoz is AccessControl, ERC721Enumerable {
         emit CredentialIssued(
             _recipient,
             credentialHash,
-            _courseName,
             _institutionName,
+            _courseName,
+            _firstName,
+            _lastName,
             _issueDate
         );
 
         return credentialHash;
     }
 
-    // Función para verificar si una credencial es válida
     function verifyCredential(bytes32 _credentialHash) public view returns (bool) {
         return credentials[_credentialHash].valid;
     }
 
-    // Función para revocar una credencial
     function revokeCredential(bytes32 _credentialHash) public {
         require(
             hasRole(DEFAULT_ADMIN_ROLE, msg.sender),
@@ -123,7 +128,6 @@ contract Torogoz is AccessControl, ERC721Enumerable {
         _burn(tokenId);
     }
 
-    // Función para obtener todas las credenciales emitidas a un usuario
     function getCredentialsByUser(address user)
         public
         view
@@ -132,11 +136,12 @@ contract Torogoz is AccessControl, ERC721Enumerable {
         return userCredentials[user];
     }
 
-    // Función para obtener detalles de una credencial
     function getCredentialDetails(bytes32 _credentialHash)
         public
         view
         returns (
+            string memory,
+            string memory,
             string memory,
             string memory,
             uint256,
@@ -145,27 +150,24 @@ contract Torogoz is AccessControl, ERC721Enumerable {
         )
     {
         Credential memory cred = credentials[_credentialHash];
-        return (
-            cred.courseName,
+        return (            
             cred.institutionName,
+            cred.courseName,
+            cred.firstName,
+            cred.lastName,
             cred.issueDate,
             cred.recipient,
             cred.valid
         );
     }
 
-    // Sobrescribir funciones para cumplir con ERC721Enumerable
     function _beforeTokenTransfer(
         address from,
         address to,
         uint256 tokenId,
         uint256 batchSize
-    ) internal virtual{
+    ) internal virtual {}
 
-    
-    }
-
-    // ERC-165 para admitir interfaces ERC-721 y ERC-721Enumerable
     function supportsInterface(bytes4 interfaceId)
         public
         view
