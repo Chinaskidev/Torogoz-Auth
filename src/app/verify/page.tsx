@@ -3,11 +3,11 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card } from "@/components/ui/card"
-import { verifyCredential, getCredentialDetails } from '@/utils/queries'
+import { Button } from "../../components/ui/button"
+import { Input } from "../../components/ui/input"
+import { Label } from "../../components/ui/label"
+import { Card } from "../../components/ui/card"
+import { verifyCredential, getCredentialDetails } from '../../utils/queries'
 
 export default function VerifyPage() {
   const [credentialHash, setCredentialHash] = useState('')
@@ -72,8 +72,10 @@ export default function VerifyPage() {
           <Card className="mt-6 p-6">
             <h2 className="text-xl font-semibold mb-4">Verified Credential</h2>
             <div className="space-y-2">
-              <p><span className="font-medium">Course:</span> {credential.courseName}</p>
               <p><span className="font-medium">Institution:</span> {credential.institutionName}</p>
+              <p><span className="font-medium">Course:</span> {credential.courseName}</p>
+              <p><span className="font-medium">Name:</span> {credential.firstName}</p>
+              <p><span className="font-medium">Lastname:</span> {credential.lastName}</p>
               <p><span className="font-medium">Issue Date:</span> {credential.issueDate}</p>
               <p><span className="font-medium">Recipient:</span> {credential.recipient}</p>
               <p><span className="font-medium">Status:</span> 

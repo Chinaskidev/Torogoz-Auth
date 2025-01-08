@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 import { usePrivy } from '@privy-io/react-auth'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { issueCredential, useContractSigner } from '@/utils/queries'
-import { uploadToIPFS } from '@/utils/ipfsUtils'
+import { Button } from "../components/ui/button"
+import { Input } from "../components/ui/input"
+import { Label } from "../components/ui/label"
+import { issueCredential, useContractSigner } from '../utils/queries'
+import { uploadToIPFS } from '../utils/ipfsUtils'
 import { JsonRpcSigner } from 'ethers'
 
 interface CertificateFormProps {
@@ -15,8 +15,10 @@ interface CertificateFormProps {
 
 export function CertificateForm({ onComplete }: CertificateFormProps) {
   const [formData, setFormData] = useState({
-    courseName: '',
     institutionName: '',
+    courseName: '',
+    firstName: '',
+    lastName: '',    
     recipientName: '',
     recipientAddress: '',
   })
@@ -54,8 +56,10 @@ export function CertificateForm({ onComplete }: CertificateFormProps) {
       // Issue credential on the blockchain
       const txHash = await issueCredential(
         signer,
-        formData.courseName,
         formData.institutionName,
+        formData.courseName,
+        formData.firstName,
+        formData.lastName,
         formData.recipientAddress
       )
 
@@ -77,16 +81,6 @@ export function CertificateForm({ onComplete }: CertificateFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <Label htmlFor="courseName">Course Name</Label>
-        <Input
-          id="courseName"
-          name="courseName"
-          value={formData.courseName}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
         <Label htmlFor="institutionName">Institution Name</Label>
         <Input
           id="institutionName"
@@ -97,15 +91,39 @@ export function CertificateForm({ onComplete }: CertificateFormProps) {
         />
       </div>
       <div>
-        <Label htmlFor="recipientName">Recipient Name</Label>
+        <Label htmlFor="courseName">Course Name</Label>
         <Input
-          id="recipientName"
-          name="recipientName"
-          value={formData.recipientName}
+          id="courseName"
+          name="courseName"
+          value={formData.courseName}
           onChange={handleChange}
           required
         />
       </div>
+
+      <div>
+        <Label htmlFor="firstName">First Name</Label>
+        <Input
+          id="firstName"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="lastName">Last Name</Label>
+        <Input
+          id="lastName"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+
       <div>
         <Label htmlFor="recipientAddress">Recipient Ethereum Address</Label>
         <Input

@@ -4,10 +4,10 @@
 
 import { useState, useEffect } from 'react'
 import { usePrivy } from '@privy-io/react-auth'
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { getCredentialsByUser, getCredentialDetails, verifyCredential, useContractSigner } from '@/utils/queries'
+import { Button } from "../../components/ui/button"
+import { Card } from "../../components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
+import { getCredentialsByUser, getCredentialDetails, verifyCredential, useContractSigner } from '../../utils/queries'
 import { FiLoader, FiPlus, FiRefreshCw, FiCheckCircle, FiXCircle } from 'react-icons/fi'
 
 
@@ -127,7 +127,7 @@ export default function DashboardPage() {
               {credentials.map((cred) => (
                 <Card key={cred.hash} className="p-6">
                   <div className="flex items-start justify-between mb-4">
-                    <h3 className="text-lg font-semibold">{cred.courseName}</h3>
+                    <h3 className="text-lg font-semibold">{cred.institutionName}</h3>
                     {cred.valid ? (
                       <FiCheckCircle className="text-green-500" />
                     ) : (
@@ -135,7 +135,7 @@ export default function DashboardPage() {
                     )}
                   </div>
                   <div className="space-y-2 text-sm">
-                    <p><span className="font-medium">Institution:</span> {cred.institutionName}</p>
+                    <p><span className="font-medium">Course:</span> {cred.courseName}</p>
                     <p><span className="font-medium">Issued:</span> {cred.issueDate}</p>
                     <p><span className="font-medium">Status:</span> 
                       <span className={cred.valid ? 'text-green-600 ml-1' : 'text-red-600 ml-1'}>

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { cn } from "@lib/utils";
+import { cn } from "../../../app/lib/utils";
 {/*import { Russo_One } from 'next/font/google';*/}
 
 import {
@@ -11,7 +11,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+} from "../../ui/navigation-menu";
 
 // Configuración de la fuente Russo One
 {/*const russoOne = Russo_One({ weight: "400", subsets: ["latin"] });*/}

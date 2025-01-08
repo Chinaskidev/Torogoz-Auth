@@ -9,22 +9,22 @@ import { PrivyProvider } from "@privy-io/react-auth";
 import React from "react";
 const font = Outfit({ subsets: ["latin"] });
 
-const Arbitrum = defineChain({
-  id: 421614,
-  name: "Arbitrum Sepolia",
-  network: "Arbitrum Sepolia",
+const Sepolia = defineChain({
+  id: 11155111 ,
+  name: "Sepolia",
+  network: "Sepolia",
   nativeCurrency: {
     decimals: 18,
-    name: "Arbitrum Sepolia",
+    name: "Sepolia",
     symbol: "ETH",
   },
   rpcUrls: {
     default: {
-      http: ["https://arbitrum-sepolia.infura.io/v3/cf29898319594df799ef861b6dab7198"],
+      http: ["https://eth-sepolia.public.blastapi.io"],
     },
   } as any,
   blockExplorers: {
-    default: { name: "Explorer", url: "https://sepolia.arbiscan.io" },
+    default: { name: "Explorer", url: "https://sepolia.etherscan.io/" },
   },
 }) as any;
 
@@ -47,8 +47,8 @@ export default function RootLayout({
             embeddedWallets: {
               createOnLogin: "users-without-wallets",
             },
-            defaultChain: Arbitrum,
-            supportedChains: [Arbitrum],
+            defaultChain: Sepolia,
+            supportedChains: [Sepolia],
           }}
         >
           {children}

@@ -3,13 +3,13 @@
 import React, { useState, useEffect } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "../../ui/button";
 import { useWallets } from "@privy-io/react-auth";
 
 import { X, AlignJustify } from "lucide-react";
 import Link from "next/link";
 import DropdownMenu from "../_components/drop_dowm_menu";
-import { issueCredential } from "@/utils/queries";
+import { issueCredential } from "../../../utils/queries";
 
 
 // Componentes del boton de accion. 

@@ -2,9 +2,9 @@
 
 import { useRouter } from 'next/navigation'
 import { usePrivy } from '@privy-io/react-auth'
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { CertificateForm } from '@/components/certificate-form'
+import { Button } from "../../components/ui/button"
+import { Card } from "../../components/ui/card"
+import { CertificateForm } from '../../components/certificate-form'
 import { FiUser, FiFileText, FiCheck } from 'react-icons/fi'
 import { useEffect, useState } from 'react'
 
@@ -32,7 +32,7 @@ export default function OnboardPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Welcome to TorogozAuth</h1>
+      <h1 className="text-3xl font-bold text-center mb-8">Welcome to Torogoz 3</h1>
       
       <div className="max-w-2xl mx-auto">
         <div className="flex justify-between mb-8">

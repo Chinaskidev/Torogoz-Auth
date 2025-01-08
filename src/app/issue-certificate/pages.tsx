@@ -1,4 +1,4 @@
-import { CertificateForm } from '@/components/certificate-form'
+import { CertificateForm } from '../../components/certificate-form'
 
 export default function IssueCertificatePage() {
   return (

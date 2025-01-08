@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../ui/button";
 import Link from "next/link";
-import { Accordion } from "@/components/ui/accordion";
-import { getCredentialsByUser } from "@/utils/queries";
+import { Accordion } from "../../ui/accordion";
+import { getCredentialsByUser } from "../../../utils/queries";
 
 interface DropDownMenuProps {
   onClose: () => void;

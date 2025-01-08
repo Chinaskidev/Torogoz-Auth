@@ -21,10 +21,10 @@ const config: HardhatUserConfig = {
   defaultNetwork: "localhost",
   networks: {
     hardhat: {
-      chainId: 421614, // Arbitrum Sepolia
+      chainId: 11155111 , //Sepolia
     },
-    arbitrum: {
-      url: "https://arbitrum-sepolia.infura.io/v3/cf29898319594df799ef861b6dab7198",
+    sepolia: {
+      url: "https://eth-sepolia.public.blastapi.io",
       accounts: [PRIVATE_KEY], // Utiliza la clave privada.
       gasPrice: 1000000000,
     },

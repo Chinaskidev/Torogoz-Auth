@@ -1,16 +1,17 @@
+'use client'
 import { ethers } from "ethers";
-import { usePrivy } from "@privy-io/react-auth";
+import { useWallets } from "@privy-io/react-auth";
 
 // Dirección y ABI del contrato
-const contractAddress = "0xA02C28C1C9914C0dF497C30b367A42A7Ea8B0BcD";
+const contractAddress = "0xA553Ca81Fa5Eb862827f0ce6B556baC4dC15051d";
 const contractABI = [
   "function addIssuer(address account)",
   "function revokeIssuer(address account)",
-  "function issueCredential(string institutionName,string courseName, string firstName, lastName, address recipient) returns (bytes32)",
+  "function issueCredential(string institutionName, string courseName, string firstName, string lastName, address recipient) returns (bytes32)", 
   "function verifyCredential(bytes32 credentialHash) view returns (bool)",
   "function revokeCredential(bytes32 credentialHash)",
   "function getCredentialsByUser(address user) view returns (bytes32[])",
-  "function getCredentialDetails(bytes32 credentialHash) view returns (string, string, uint256, address, bool)"
+  "function getCredentialDetails(bytes32 credentialHash) view returns (string, string, string, string, uint256, address, bool)" 
 ];
 
 /**
@@ -18,14 +19,18 @@ const contractABI = [
  * @returns {getSigner: Function}
  */
 export function useContractSigner() {
-  const { ready, getEthersProvider } = usePrivy();
+  const { wallets } = useWallets();
 
   const getSigner = async (): Promise<ethers.Signer> => {
-    if (!ready) {
-      throw new Error("Privy is not ready");
+    if (!wallets || wallets.length === 0) {
+      throw new Error("No wallets connected");
     }
-    const provider = await getEthersProvider();
-    return provider.getSigner(); // Retorna el signer para realizar transacciones
+
+    // Obtén el proveedor compatible con ethers.js desde la primera billetera
+    const provider = await wallets[0].getEthersProvider();
+
+    // Retorna el signer asociado a la billetera conectada
+    return provider.getSigner();
   };
 
   return { getSigner };
@@ -34,20 +39,40 @@ export function useContractSigner() {
 /**
  * Emitir un certificado
  * @param signer {ethers.Signer} - Firmante conectado
- * @param courseName {string} - Nombre del curso
  * @param institutionName {string} - Nombre de la institución
+ * @param courseName {string} - Nombre del curso
+ * @param firstName {string}- Nombre de la persona
+ * @param lastName {string}- Apellido de la persona * 
  * @param recipient {string} - Dirección del destinatario
  * @returns {Promise<string>} - Hash de la transacción
  */
 export async function issueCredential(
   signer: ethers.Signer,
-  courseName: string,
   institutionName: string,
+  courseName: string,
+  firstName: string,
+  lastName: string,
   recipient: string
 ): Promise<string> {
   try {
+    if (!signer) {
+      throw new Error("Signer is not available");
+    }
+
+    // Verifica la conexión
+    console.log("Signer address:", await signer.getAddress());
+
     const contract = new ethers.Contract(contractAddress, contractABI, signer);
-    const tx = await contract.issueCredential(courseName, institutionName, recipient);
+
+    // Intenta emitir la credencial
+    const tx = await contract.issueCredential(
+      institutionName,
+      courseName,
+      firstName,
+      lastName,
+      recipient
+    );
+
     console.log("Credential issued:", tx.hash);
     return tx.hash; // Retorna el hash de la transacción
   } catch (error) {
